@@ -91,3 +91,15 @@ public class MergeSort
         scanner.close();
     }
 }
+output:
+Enter the number of elements in the array:
+6 
+Enter the elements of the array:
+8
+3
+6
+5
+1
+9
+Sorted Array:
+1 3 5 6 8 9

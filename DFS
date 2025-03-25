@@ -36,3 +36,5 @@ class DFS {
         dfs(adj, 0);
     }
 }
+output:
+0 1 2 3 4 

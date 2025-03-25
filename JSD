@@ -36,3 +36,5 @@ class JSD {
         System.out.println(ans.get(0) + " " + ans.get(1));
     }
 }
+OUPUT:
+2 127

@@ -1,8 +1,7 @@
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
-class DFS {
-   static void dfsRec(List<List<Integer>> adj, boolean[] visited, int s) {
+class DFSList {
+    static void dfsRec(List<List<Integer>> adj, boolean[] visited, int s) {
         visited[s] = true;
         System.out.print(s + " ");
         for (int i : adj.get(s)) {
@@ -11,12 +10,11 @@ class DFS {
             }
         }
     }
-
-    static void dfs(List<List<Integer>> adj, int s) {
+    static void dfs(List<List<Integer>> adj, int start) {
         boolean[] visited = new boolean[adj.size()];
-        dfsRec(adj, visited, s);
+        System.out.println("DFS starting from vertex " + start + ":");
+        dfsRec(adj, visited, start);
     }
-
     static void addEdge(List<List<Integer>> adj, int u, int v) {
         adj.get(u).add(v);
         adj.get(v).add(u);
@@ -28,13 +26,10 @@ class DFS {
         for (int i = 0; i < V; i++) {
             adj.add(new ArrayList<>());
         }
-        int[][] edges = { { 1, 2 }, { 1, 0 }, { 2, 0 }, { 2, 3
-        }, { 2, 4 } };
-        for (int[] e : edges) {
-            addEdge(adj, e[0], e[1]);
+        int[][] edges = { {0, 1}, {0, 2}, {1, 2}, {2, 3}, {2, 4} };
+        for (int[] edge : edges) {
+            addEdge(adj, edge[0], edge[1]);
         }
         dfs(adj, 0);
     }
 }
-output:
-0 1 2 3 4 

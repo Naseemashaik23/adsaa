@@ -1,5 +1,5 @@
-
 import java.util.*;
+
 class DFSMatrix {
     static void dfsRec(int[][] adj, boolean[] visited, int s) {
         visited[s] = true;
@@ -12,22 +12,19 @@ class DFSMatrix {
     }
     static void dfs(int[][] adj, int start) {
         boolean[] visited = new boolean[adj.length];
+        System.out.println("DFS starting from vertex " + start + ":");
         dfsRec(adj, visited, start);
-    }
-    static void addEdge(int[][] adj, int u, int v) {
-        adj[u][v] = 1;
-        adj[v][u] = 1; 
     }
 
     public static void main(String[] args) {
-        int V = 5; 
-        int[][] adj = new int[V][V];
-        int[][] edges = { {1, 2}, {1, 0}, {2, 0}, {2, 3}, {2, 4} };
-        for (int[] e : edges) {
-            addEdge(adj, e[0], e[1]);
-        }
+        int[][] adj = { 
+            {0, 1, 1, 0, 0},
+            {1, 0, 1, 0, 0},
+            {0, 1, 0, 1, 1},
+            {0, 0, 1, 0, 0},
+            {0, 0, 1, 0, 0} 
+        };
 
-        System.out.println("DFS starting from vertex 0:");
         dfs(adj, 0);
     }
 }

@@ -1,0 +1,96 @@
+public class Minheap{
+	int arr[];//arr to store heap elements;
+	int maxSize;//Max no.of elemeents that an arr can hold
+	int heapSize;//no.of elements in heap
+	//Constructor
+	Minheap(int maxSize){
+		this.maxSize=maxSize;
+		heapSize=0;//no elements in heap
+		arr=new int[maxSize];
+	}
+	//get parent index
+	int parent(int i){
+		return (i-1)/2;
+	}
+	//get left child of given parent index i
+	int lchild(int i){
+		return 2*i+1;
+	}
+	//get right child of given parent index
+	int rchild(int i){
+		return 2*i+2;
+	}
+	//Heapify
+	void MinHeapify(int i){
+		int l=lchild(i);
+		int r=rchild(i);
+		int smallest=i;
+		if(l<heapSize && arr[l]<arr[i]){
+			smallest=l;
+		}
+		if(r<heapSize && arr[r]<arr[smallest]){
+			smallest=r;
+		}
+		if(smallest!=i){
+			int temp=arr[i];
+			arr[i]=arr[smallest];
+			arr[smallest]=temp;
+			MinHeapify(smallest);
+		}
+	}
+	//Remove min element and replace with last element
+	void removeMin(){
+		if(heapSize<=0){
+			System.out.println("Heap is empty");
+		}
+		if(heapSize==1){
+			heapSize--;
+		}else{
+			arr[0]=arr[heapSize-1];
+			heapSize--;
+			MinHeapify(0);		
+		}
+	}
+	//Get minimum element
+	int getMin(){
+		return arr[0];
+	}
+	//Get current size of heap
+	int curSize(){
+		return heapSize;
+	}
+	//Inserting a key
+	void insertKey(int x){
+		if(heapSize==maxSize){
+			System.out.println("Could not insert");
+			return;
+		}
+		int i=heapSize;
+		arr[i]=x;
+		heapSize++;
+		while(i!=0 && arr[parent(i)]>arr[i]){
+			int temp=arr[parent(i)];
+			arr[parent(i)]=arr[i];
+			arr[i]=temp;
+			i=parent(i);
+		}
+	}
+	public static void main(String[] args) {
+Minheap h = new Minheap(15);
+int elements[] = {3, 10, 12, 8, 2,14};
+for (int e : elements)
+h.insertKey(e);
+System.out.println("The current size of the heap is " + h.curSize());
+System.out.println("The current maximum element is " + h.getMin());
+h.removeMin();
+System.out.println("The current size of the heap is " + h.curSize());
+h.insertKey(15);
+
+h.insertKey(5);
+System.out.println("The current size of the heap is " + h.curSize());
+
+System.out.println("The current maximum element is " + h.getMin());
+
+}
+ }
+		

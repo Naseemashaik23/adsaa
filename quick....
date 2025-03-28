@@ -1,103 +1,59 @@
-import java.util.Random;
-
+import java.util.Scanner;
 public class QuickSort {
-    // Function to perform QuickSort
-    public static void quickSort(int[] arr, int low, int high) {
+    public static void quicksort(int[] a, int low, int high) {
         if (low < high) {
-            int pi = partition(arr, low, high);
-            quickSort(arr, low, pi - 1);  // Sort left half
-            quickSort(arr, pi + 1, high); // Sort right half
+            int j = partition(a, low, high);
+            quicksort(a, low, j - 1);
+            quicksort(a, j + 1, high);
         }
     }
-
-    // Function to find the partition index
-    private static int partition(int[] arr, int low, int high) {
-        int pivot = arr[high];  // pivot element
-        int i = (low - 1);  // index of smaller element
-
-        for (int j = low; j < high; j++) {
-            if (arr[j] <= pivot) {
+    public static int partition(int[] a, int low, int high) {
+        int pivot = a[low];
+        int i = low + 1;
+        int j = high;
+        while (i <= j) {
+            while (i <= j && a[i] <= pivot) {
                 i++;
-                // Swap arr[i] and arr[j]
-                int temp = arr[i];
-                arr[i] = arr[j];
-                arr[j] = temp;
+            }
+            while (i <= j && a[j] >= pivot) {
+                j--;
+            }
+            if (i < j) {
+                swap(a, i, j);
             }
         }
-
-        // Swap arr[i + 1] and arr[high] (pivot element)
-        int temp = arr[i + 1];
-        arr[i + 1] = arr[high];
-        arr[high] = temp;
-
-        return i + 1;
+        swap(a, low, j);
+        return j;
     }
+    public static void swap(int[] a, int i, int j) {
 
-    // Function to print the array
-    public static void printArray(int[] arr) {
-        for (int num : arr) {
+        int temp = a[i];
+        a[i] = a[j];
+        a[j] = temp;
+    }
+    private static long measureTime(int[] arr) {
+        long startTime = System.nanoTime();
+        quicksort(arr, 0, arr.length - 1);
+        long endTime = System.nanoTime();
+        return (endTime - startTime);
+    }
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter the number of elements in the array: ");
+        int n = sc.nextInt();
+        int[] array = new int[n];
+        System.out.println("Enter the elements in the array:");
+        for (int i = 0; i < n; i++) {
+            array[i] = sc.nextInt();
+        }
+        long executionTime = measureTime(array);
+        System.out.println("After sorting:");
+
+        for (int num : array) {
             System.out.print(num + " ");
         }
-        System.out.println();
+        System.out.println("\nExecution Time: " + executionTime + " nanoseconds");
+        sc.close();
     }
 
-    // Driver method to test the sorting and measure execution time
-    public static void main(String[] args) {
-        Random rand = new Random();
-    
-        // Average case: Random array
-        int[] avgArr = rand.ints(25, 0, 100).toArray();
-        System.out.println("Average Case (Before Sorting):");
-        printArray(avgArr);  // Display the array before
-long startTime = System.nanoTime();
-        quickSort(avgArr, 0, avgArr.length - 1);
-        long endTime = System.nanoTime();
-        System.out.println("QuickSort (Average Case) Time: " + (endTime - startTime) + " ns");
-        System.out.println("Average Case (After Sorting):");
-        printArray(avgArr);  // Display the array after sorting
-    
-        // Worst case: Sorted in descending order
-        int[] worstArr = new int[25];
-        for (int i = 0; i < worstArr.length; i++) {
-            worstArr[i] = 100 - i;
-        }
-        System.out.println("Worst Case (Before Sorting):");
-        printArray(worstArr);  // Display the array before sorting
-        startTime = System.nanoTime();
-        quickSort(worstArr, 0, worstArr.length - 1);
-        endTime = System.nanoTime();
-        System.out.println("QuickSort (Worst Case) Time: " + (endTime - startTime) + " ns");
-        System.out.println("Worst Case (After Sorting):");
-        printArray(worstArr);  // Display the array after sorting
-    
-        // Best case: Sorted array
-        int[] bestArr = new int[25];
-        for (int i = 0; i < bestArr.length; i++) {
-            bestArr[i] = i;
-        }
-        System.out.println("Best Case (Before Sorting):");
-        printArray(bestArr);  // Display the array before sorting
-        startTime = System.nanoTime();
-        quickSort(bestArr, 0, bestArr.length - 1);
-        endTime = System.nanoTime();
-        System.out.println("QuickSort (Best Case) Time: " + (endTime - startTime) + " ns");
-        System.out.println("Best Case (After Sorting):");
-        printArray(bestArr);  // Display the array after sorting
-    }
 }
-output:
-Average Case (Before Sorting):
-88 94 22 36 2 23 58 24 82 23 29 37 83 40 55 42 16 16 56 5 56 58 35 84 18 
-QuickSort (Average Case) Time: 7734 ns
-Average Case (After Sorting):
-2 5 16 16 18 22 23 23 24 29 35 36 37 40 42 55 56 56 58 58 82 83 84 88 94 
-Worst Case (Before Sorting):
-100 99 98 97 96 95 94 93 92 91 90 89 88 87 86 85 84 83 82 81 80 79 78 77 76 
-QuickSort (Worst Case) Time: 8225 ns
-Worst Case (After Sorting):
-76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97 98 99 100 
-Best Case (Before Sorting):
-0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 
-QuickSort (Best Case) Time: 10851 ns
-Best Case (After Sorting):
-0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 

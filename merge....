@@ -1,108 +1,71 @@
-import java.util.Random;
+import java.util.Scanner;
 
 public class MergeSort {
-    // Function to perform MergeSort
-    public static void mergeSort(int[] arr) {
-        if (arr.length < 2) {
-            return;
+    private static int[] b;
+
+    public static void mergeSort(int[] a, int low, int high) {
+        if (low < high) {
+            int mid = (low + high) / 2;
+            mergeSort(a, low, mid);
+            mergeSort(a, mid + 1, high);
+            merge(a, low, mid, high);
         }
-
-        int mid = arr.length / 2;
-        int[] left = new int[mid];
-        int[] right = new int[arr.length - mid];
-
-        System.arraycopy(arr, 0, left, 0, mid);
-        System.arraycopy(arr, mid, right, 0, arr.length - mid);
-
-        mergeSort(left);
-        mergeSort(right);
-
-        merge(arr, left, right);
     }
 
-    // Function to merge two sorted subarrays
-    private static void merge(int[] arr, int[] left, int[] right) {
-        int i = 0, j = 0, k = 0;
+    public static void merge(int[] a, int low, int mid, int high) {
+        int i = low, j = mid + 1, k = low;
 
-        while (i < left.length && j < right.length) {
-            if (left[i] <= right[j]) {
-                arr[k++] = left[i++];
+        while (i <= mid && j <= high) {
+            if (a[i] <= a[j]) {
+                b[k++] = a[i++];
             } else {
-                arr[k++] = right[j++];
+                b[k++] = a[j++];
             }
         }
 
-        while (i < left.length) {
-            arr[k++] = left[i++];
+        while (i <= mid) {
+            b[k++] = a[i++];
         }
 
-        while (j < right.length) {
-            arr[k++] = right[j++];
+        while (j <= high) {
+            b[k++] = a[j++];
+        }
+
+        for (int h = low; h <= high; h++) {
+            a[h] = b[h];
         }
     }
-    
-    private static void displayArray(int[] arr) {
-        for (int i : arr) {
-            System.out.print(i + " ");
-        }
-        System.out.println();
-    }
 
-    // Driver method to test the sorting and measure execution time
-    public static void main(String[] args) {
-Random rand = new Random();
-
-        // Average case: Random array
-        int[] avgArr = rand.ints(25, 0, 1000).toArray();
-        System.out.print("Before Sorting: ");
-        displayArray(avgArr); 
+    private static long measureTime(int[] arr) {
         long startTime = System.nanoTime();
-        mergeSort(avgArr);
+        mergeSort(arr, 0, arr.length - 1);
         long endTime = System.nanoTime();
-        System.out.println("MergeSort (Average Case) Time: " + (endTime - startTime) + " ns");
-        System.out.print("After Sorting: ");
-        displayArray(avgArr);
-        System.out.println();
+        return (endTime - startTime);
+    }
 
-        // Worst case: Sorted in descending order
-        int[] worstArr = new int[25];
-        for (int i = 0; i < worstArr.length; i++) {
-            worstArr[i] = 1000 - i;
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter the number of elements in the array: ");
+        int n = sc.nextInt();
+        int[] array = new int[n];
+        b = new int[n];
+
+        System.out.println("Enter the elements in the array:");
+        for (int i = 0; i < n; i++) {
+            array[i] = sc.nextInt();
         }
-        startTime = System.nanoTime();
-        System.out.print("Before Sorting: ");
-        displayArray(worstArr); 
-        mergeSort(worstArr);
-        endTime = System.nanoTime();
-        System.out.println("MergeSort (Worst Case) Time: " + (endTime - startTime) + " ns");
-        System.out.print("After Sorting: ");
-        displayArray(worstArr); 
-        System.out.println();
 
-        // Best case: Sorted array
-        int[] bestArr = new int[25];
-        for (int i = 0; i < bestArr.length; i++) {
-            bestArr[i] = i;
+        // Measure execution time
+        long executionTime = measureTime(array);
+
+        System.out.println("After sorting:");
+        for (int num : array) {
+            System.out.print(num + " ");
         }
-        startTime = System.nanoTime();
-        System.out.print("Before Sorting: ");
-        displayArray(bestArr);
-        mergeSort(bestArr);
-        endTime = System.nanoTime();
-        System.out.println("MergeSort (Best Case) Time: " + (endTime - startTime) + " ns");
-        System.out.print("After Sorting: ");
-        displayArray(bestArr);
-}
-}
-output:
-Before Sorting: 589 252 546 958 618 816 925 365 539 510 445 383 332 987 660 322 170 436 981 325 938 385 380 138 348 
-MergeSort (Average Case) Time: 14531 ns
-After Sorting: 138 170 252 322 325 332 348 365 380 383 385 436 445 510 539 546 589 618 660 816 925 938 958 981 987 
 
-Before Sorting: 1000 999 998 997 996 995 994 993 992 991 990 989 988 987 986 985 984 983 982 981 980 979 978 977 976 
-MergeSort (Worst Case) Time: 231647 ns
-After Sorting: 976 977 978 979 980 981 982 983 984 985 986 987 988 989 990 991 992 993 994 995 996 997 998 999 1000 
+        System.out.println("\nExecution Time: " + executionTime + " nanoseconds");
 
-Before Sorting: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 
-MergeSort (Best Case) Time: 262439 ns
-After Sorting: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 
+        sc.close();
+    }
+}

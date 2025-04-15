@@ -1,0 +1,122 @@
+import java.util.Scanner;
+
+class MaxHeap {
+    int[] arr;
+    int maxSize, heapSize;
+
+    MaxHeap(int maxSize) {
+        this.maxSize = maxSize;
+        heapSize = 0;
+        arr = new int[maxSize];
+    }
+
+    int parent(int i) {
+        return (i - 1) / 2;
+    }
+
+    int lChild(int i) {
+        return 2 * i + 1;
+    }
+
+    int rChild(int i) {
+        return 2 * i + 2;
+    }
+
+    void MaxHeapify(int i) {
+        int l = lChild(i);
+        int r = rChild(i);
+        int largest = i;
+        if (l < heapSize && arr[l] > arr[i])
+            largest = l;
+        if (r < heapSize && arr[r] > arr[largest])
+            largest = r;
+        if (largest != i) {
+            int temp = arr[i];
+            arr[i] = arr[largest];
+            arr[largest] = temp;
+            MaxHeapify(largest);
+        }
+    }
+
+    void removeMax() {
+        if (heapSize <= 0) {
+            System.out.println("Heap is empty");
+        } else if (heapSize == 1) {
+            heapSize--;
+        } else {
+            arr[0] = arr[heapSize - 1];
+            heapSize--;
+            MaxHeapify(0);
+        }
+    }
+
+    int getMax() {
+        return heapSize > 0 ? arr[0] : -1;
+    }
+
+    int curSize() {
+        return heapSize;
+    }
+
+    void insertKey(int x) {
+        if (heapSize == maxSize) {
+            System.out.println("Overflow: Could not insertKey");
+            return;
+        }
+        int i = heapSize;
+        arr[i] = x;
+        heapSize++;
+        while (i != 0 && arr[parent(i)] < arr[i]) {
+            int temp = arr[i];
+            arr[i] = arr[parent(i)];
+            arr[parent(i)] = temp;
+            i = parent(i);
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter max size of heap: ");
+        int size = sc.nextInt();
+        MaxHeap h = new MaxHeap(size);
+
+        while (true) {
+            System.out.println("\nMenu:");
+            System.out.println("1. Insert element");
+            System.out.println("2. Remove max");
+            System.out.println("3. Get max");
+            System.out.println("4. Get current size");
+            System.out.println("5. Exit");
+            System.out.print("Enter your choice: ");
+            int ch = sc.nextInt();
+
+            switch (ch) {
+                case 1:
+                    System.out.print("Enter element to insert: ");
+                    int val = sc.nextInt();
+                    h.insertKey(val);
+                    break;
+                case 2:
+                    h.removeMax();
+                    System.out.println("Max element removed.");
+                    break;
+                case 3:
+                    int max = h.getMax();
+                    if (max != -1)
+                        System.out.println("Current max is: " + max);
+                    else
+                        System.out.println("Heap is empty.");
+                    break;
+                case 4:
+                    System.out.println("Current size is: " + h.curSize());
+                    break;
+                case 5:
+                    System.out.println("Exiting.");
+                    sc.close();
+                    return;
+                default:
+                    System.out.println("Invalid choice.");
+            }
+        }
+    }
+}

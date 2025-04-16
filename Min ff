@@ -1,11 +1,10 @@
 import java.util.Scanner;
 
-public class Minheap {
-    int arr[];
-    int maxSize;
-    int heapSize;
+class MinHeap {
+    int[] arr;
+    int maxSize, heapSize;
 
-    Minheap(int maxSize) {
+    MinHeap(int maxSize) {
         this.maxSize = maxSize;
         heapSize = 0;
         arr = new int[maxSize];
@@ -15,24 +14,24 @@ public class Minheap {
         return (i - 1) / 2;
     }
 
-    int lchild(int i) {
+    int lChild(int i) {
         return 2 * i + 1;
     }
 
-    int rchild(int i) {
+    int rChild(int i) {
         return 2 * i + 2;
     }
 
     void MinHeapify(int i) {
-        int l = lchild(i);
-        int r = rchild(i);
+        int l = lChild(i);
+        int r = rChild(i);
         int smallest = i;
-        if (l < heapSize && arr[l] < arr[i]) {
+
+        if (l < heapSize && arr[l] < arr[smallest])
             smallest = l;
-        }
-        if (r < heapSize && arr[r] < arr[smallest]) {
+        if (r < heapSize && arr[r] < arr[smallest])
             smallest = r;
-        }
+
         if (smallest != i) {
             int temp = arr[i];
             arr[i] = arr[smallest];
@@ -63,21 +62,25 @@ public class Minheap {
 
     void insertKey(int x) {
         if (heapSize == maxSize) {
-            System.out.println("Could not insert");
+            System.out.println("Overflow: Could not insertKey");
             return;
         }
         int i = heapSize;
         arr[i] = x;
         heapSize++;
         while (i != 0 && arr[parent(i)] > arr[i]) {
-            int temp = arr[parent(i)];
-            arr[parent(i)] = arr[i];
-            arr[i] = temp;
+            int temp = arr[i];
+            arr[i] = arr[parent(i)];
+            arr[parent(i)] = temp;
             i = parent(i);
         }
     }
 
     void displayHeap() {
+        if (heapSize == 0) {
+            System.out.println("Heap is empty.");
+            return;
+        }
         System.out.print("Heap elements: ");
         for (int i = 0; i < heapSize; i++) {
             System.out.print(arr[i] + " ");
@@ -89,7 +92,7 @@ public class Minheap {
         Scanner sc = new Scanner(System.in);
         System.out.print("Enter max size of heap: ");
         int size = sc.nextInt();
-        Minheap h = new Minheap(size);
+        MinHeap h = new MinHeap(size);
 
         while (true) {
             System.out.println("\nMenu:");
@@ -97,8 +100,8 @@ public class Minheap {
             System.out.println("2. Remove min");
             System.out.println("3. Get min");
             System.out.println("4. Get current size");
-            System.out.println("5. Display heap");
-            System.out.println("6. Exit");
+            System.out.println("5. Exit");
+            System.out.println("6. Display heap");
             System.out.print("Enter your choice: ");
             int ch = sc.nextInt();
 
@@ -123,12 +126,12 @@ public class Minheap {
                     System.out.println("Current size is: " + h.curSize());
                     break;
                 case 5:
-                    h.displayHeap();
-                    break;
-                case 6:
                     System.out.println("Exiting.");
                     sc.close();
                     return;
+                case 6:
+                    h.displayHeap();
+                    break;
                 default:
                     System.out.println("Invalid choice.");
             }

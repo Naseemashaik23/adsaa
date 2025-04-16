@@ -26,10 +26,12 @@ class MaxHeap {
         int l = lChild(i);
         int r = rChild(i);
         int largest = i;
-        if (l < heapSize && arr[l] > arr[i])
+
+        if (l < heapSize && arr[l] > arr[largest])
             largest = l;
         if (r < heapSize && arr[r] > arr[largest])
             largest = r;
+
         if (largest != i) {
             int temp = arr[i];
             arr[i] = arr[largest];
@@ -74,6 +76,18 @@ class MaxHeap {
         }
     }
 
+    void displayHeap() {
+        if (heapSize == 0) {
+            System.out.println("Heap is empty.");
+            return;
+        }
+        System.out.print("Heap elements: ");
+        for (int i = 0; i < heapSize; i++) {
+            System.out.print(arr[i] + " ");
+        }
+        System.out.println();
+    }
+
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         System.out.print("Enter max size of heap: ");
@@ -87,6 +101,7 @@ class MaxHeap {
             System.out.println("3. Get max");
             System.out.println("4. Get current size");
             System.out.println("5. Exit");
+            System.out.println("6. Display heap");
             System.out.print("Enter your choice: ");
             int ch = sc.nextInt();
 
@@ -114,6 +129,9 @@ class MaxHeap {
                     System.out.println("Exiting.");
                     sc.close();
                     return;
+                case 6:
+                    h.displayHeap();
+                    break;
                 default:
                     System.out.println("Invalid choice.");
             }

@@ -1,0 +1,44 @@
+import java.util.*;
+
+public class K {
+    int[] w, v;
+    int c, n, m = 0;
+    List<Integer> b = new ArrayList<>();
+
+    public K(int[] w, int[] v, int c) {
+        this.w = w;
+        this.v = v;
+        this.c = c;
+        this.n = w.length;
+    }
+
+    void s() {
+        r(0, 0, 0, new ArrayList<>());
+        System.out.println("Max: " + m);
+        System.out.print("Items: ");
+        for (int i : b) System.out.print(i + " ");
+        System.out.println();
+    }
+
+    void r(int i, int cw, int cp, List<Integer> cs) {
+        if (i == n) {
+            if (cp > m) {
+                m = cp;
+                b = new ArrayList<>(cs);
+            }
+            return;
+        }
+        r(i + 1, cw, cp, new ArrayList<>(cs));
+        if (cw + w[i] <= c) {
+            cs.add(i);
+            r(i + 1, cw + w[i], cp + v[i], cs);
+        }
+    }
+
+    public static void main(String[] args) {
+        int[] v = {60, 100, 120};
+        int[] w = {10, 20, 30};
+        int c = 50;
+        new K(w, v, c).s();
+    }
+}
